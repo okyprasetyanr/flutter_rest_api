@@ -1,3 +1,5 @@
+import 'package:flutter_restful_api/models/model_data/model_todo.dart';
+
 class MainMenuEvent {}
 
 class MainMenuGetData extends MainMenuEvent {
@@ -10,3 +12,9 @@ class MainMenuGetData extends MainMenuEvent {
 }
 
 class MainMenuResetSelected extends MainMenuEvent {}
+
+class MainMenuAdd extends MainMenuEvent {
+  final ModelTodo data;
+
+  MainMenuAdd({required this.data});
+}

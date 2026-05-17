@@ -11,6 +11,7 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
   MainMenuBloc() : super(MainMenuInitial()) {
     on<MainMenuGetData>(_getData);
     on<MainMenuResetSelected>(_resetSelected);
+    on<MainMenuAdd>(_add);
   }
 
   Future<void> _getData(
@@ -47,5 +48,18 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
     Emitter<MainMenuState> emit,
   ) {
     emit((state as MainMenuLoaded).copyWith(selectedTodo: null));
+  }
+
+  FutureOr<void> _add(MainMenuAdd event, Emitter<MainMenuState> emit) {
+    final currentState = state as MainMenuLoaded;
+    final listData = currentState.listTodo.toList();
+    final index = listData.indexWhere((element) => element.id == event.data.id);
+
+    if (index != -1) {
+      listData[index] = event.data;
+    } else {
+      listData.add(event.data);
+    }
+    emit(currentState.copyWith(listTodo: listData));
   }
 }
