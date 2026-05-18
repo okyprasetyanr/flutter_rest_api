@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_restful_api/models/from_json.dart';
+import 'package:flutter_restful_api/models/convert_json/from_json.dart';
 import 'package:flutter_restful_api/models/model_data/model_todo.dart';
 import 'package:flutter_restful_api/models/model_data/model_todo_parent.dart';
 

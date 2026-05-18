@@ -11,6 +11,8 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
   MainMenuBloc() : super(MainMenuInitial()) {
     on<MainMenuGetData>(_getData);
     on<MainMenuResetSelected>(_resetSelected);
+    on<MainMenuUpdateTodo>(_updateTodo);
+    on<MainMenuDeleteTodo>(_deleteTodo);
   }
 
   Future<void> _getData(
@@ -47,5 +49,9 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
     Emitter<MainMenuState> emit,
   ) {
     emit((state as MainMenuLoaded).copyWith(selectedTodo: null));
+  }
+
+  Future<void> _updateTodo(MainMenuUpdateTodo event, Emitter<MainMenuState> emit) async {
+    final data=await update
   }
 }
