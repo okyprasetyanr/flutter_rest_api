@@ -10,10 +10,14 @@ class MainMenuLoaded extends MainMenuState with EquatableMixin {
   final ModelTodo? selectedTodo;
   final ModelTodoParent? filteredTodo;
   final List<ModelTodo> listTodo;
+  final bool isSnackbarActive;
+  final String? meesageSnackBar;
 
   MainMenuLoaded({
+    this.isSnackbarActive = false,
     this.selectedTodo,
     this.filteredTodo,
+    this.meesageSnackBar,
     this.listTodo = const [],
   });
 
@@ -21,8 +25,12 @@ class MainMenuLoaded extends MainMenuState with EquatableMixin {
     ModelTodo? selectedTodo,
     ModelTodoParent? filteredTodo,
     List<ModelTodo>? listTodo,
+    String? meesageSnackBar,
+    bool? isSnackbarActive,
   }) {
     return MainMenuLoaded(
+      meesageSnackBar: meesageSnackBar,
+      isSnackbarActive: isSnackbarActive ?? this.isSnackbarActive,
       filteredTodo: filteredTodo ?? this.filteredTodo,
       selectedTodo: selectedTodo,
       listTodo: listTodo ?? this.listTodo,
@@ -30,5 +38,11 @@ class MainMenuLoaded extends MainMenuState with EquatableMixin {
   }
 
   @override
-  List<Object?> get props => [selectedTodo, filteredTodo, listTodo];
+  List<Object?> get props => [
+    meesageSnackBar,
+    selectedTodo,
+    filteredTodo,
+    listTodo,
+    isSnackbarActive,
+  ];
 }

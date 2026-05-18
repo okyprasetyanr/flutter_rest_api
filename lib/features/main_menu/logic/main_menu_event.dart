@@ -10,3 +10,17 @@ class MainMenuGetData extends MainMenuEvent {
 }
 
 class MainMenuResetSelected extends MainMenuEvent {}
+
+class MainMenuUpdateTodo extends MainMenuEvent {
+  final int idItem;
+
+  MainMenuUpdateTodo({required this.idItem});
+}
+
+class MainMenuDeleteTodo extends MainMenuEvent {
+  final int idItem;
+
+  MainMenuDeleteTodo({required this.idItem});
+}
+
+class MainMenuResetSnackBarStatus extends MainMenuEvent {}

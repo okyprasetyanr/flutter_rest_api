@@ -42,21 +42,37 @@ class _UiMainMenuState extends State<UiMainMenu> {
                           ...state.map(
                             (e) => Card(
                               elevation: 3,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 5,
-                                  vertical: 5,
-                                ),
-                                child: Column(
-                                  children: [
-                                    _rowContent("Note", e.todo),
-                                    _rowContent("Id Note", e.id),
-                                    _rowContent("Id User", e.userId),
-                                    _rowContent(
-                                      "Selesai",
-                                      e.completed ? "Ya" : "Belum",
+                              child: GestureDetector(
+                                onTap: () {
+                                  final bloc = context.read<MainMenuBloc>();
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => Row(
+                                      children: [
+                                        TextButton(
+                                          onPressed: () {},
+                                          child: Text("Update"),
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 5,
+                                    vertical: 5,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      _rowContent("Note", e.todo),
+                                      _rowContent("Id Note", e.id),
+                                      _rowContent("Id User", e.userId),
+                                      _rowContent(
+                                        "Selesai",
+                                        e.completed ? "Ya" : "Belum",
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
