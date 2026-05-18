@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_restful_api/connection/delete_api.dart';
 import 'package:flutter_restful_api/connection/get_api.dart';
+import 'package:flutter_restful_api/connection/update_api.dart';
 import 'package:flutter_restful_api/features/main_menu/logic/main_menu_event.dart';
 import 'package:flutter_restful_api/features/main_menu/logic/main_menu_state.dart';
 import 'package:flutter_restful_api/models/model_data/model_todo.dart';
@@ -11,7 +13,9 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
   MainMenuBloc() : super(MainMenuInitial()) {
     on<MainMenuGetData>(_getData);
     on<MainMenuResetSelected>(_resetSelected);
+    on<MainMenuAdd>(_add);
     on<MainMenuUpdateTodo>(_updateTodo);
+    on<MainMenuResetSnackBarStatus>(_reseetSnackBarStatus);
     on<MainMenuDeleteTodo>(_deleteTodo);
   }
 
@@ -51,7 +55,64 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
     emit((state as MainMenuLoaded).copyWith(selectedTodo: null));
   }
 
-  Future<void> _updateTodo(MainMenuUpdateTodo event, Emitter<MainMenuState> emit) async {
-    final data=await update
+  FutureOr<void> _add(MainMenuAdd event, Emitter<MainMenuState> emit) {
+    final currentState = state as MainMenuLoaded;
+    final listData = currentState.listTodo.toList();
+    final index = listData.indexWhere((element) => element.id == event.data.id);
+
+    if (index != -1) {
+      listData[index] = event.data;
+    } else {
+      listData.add(event.data);
+    }
+    emit(currentState.copyWith(listTodo: listData));
+  }
+
+  Future<void> _updateTodo(
+    MainMenuUpdateTodo event,
+    Emitter<MainMenuState> emit,
+  ) async {
+    final currentState = state as MainMenuLoaded;
+    final data = await updateDataTodo(event.idItem);
+    final listData = List<ModelTodo>.from(currentState.listTodo);
+    final index = listData.indexWhere((element) => element.id == event.idItem);
+    if (index != -1 && data.$2 != null) {
+      listData[index] = data.$2!;
+    }
+    emit(
+      currentState.copyWith(
+        isSnackbarActive: true,
+        meesageSnackBar: data.$1,
+        listTodo: listData,
+      ),
+    );
+    add(MainMenuResetSnackBarStatus());
+  }
+
+  Future<void> _deleteTodo(
+    MainMenuDeleteTodo event,
+    Emitter<MainMenuState> emit,
+  ) async {
+    final currentState = state as MainMenuLoaded;
+    final data = await deleteDataTodo(event.idItem);
+    final listData = List<ModelTodo>.from(currentState.listTodo);
+    if (data.$2 != null) {
+      listData.removeWhere((element) => element.id == data.$2!.id);
+    }
+    emit(
+      currentState.copyWith(
+        listTodo: listData,
+        isSnackbarActive: true,
+        meesageSnackBar: data.$1,
+      ),
+    );
+    add(MainMenuResetSnackBarStatus());
+  }
+
+  FutureOr<void> _reseetSnackBarStatus(
+    MainMenuResetSnackBarStatus event,
+    Emitter<MainMenuState> emit,
+  ) {
+    emit((state as MainMenuLoaded).copyWith(isSnackbarActive: false));
   }
 }

@@ -6,7 +6,7 @@ import 'package:flutter_restful_api/models/model_data/model_todo.dart';
 final dio = Dio();
 Future<(String, ModelTodo?)> updateDataTodo(int id) async {
   try {
-    final response = await dio.put(
+    final response = await dio.patch(
       'https://dummyjson.com/todos/$id',
       data: {'completed': true},
     );

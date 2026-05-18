@@ -19,6 +19,12 @@ class MainMenuUpdateTodo extends MainMenuEvent {
   MainMenuUpdateTodo({required this.idItem});
 }
 
+class MainMenuAdd extends MainMenuEvent {
+  final ModelTodo data;
+
+  MainMenuAdd({required this.data});
+}
+
 class MainMenuDeleteTodo extends MainMenuEvent {
   final int idItem;
 
